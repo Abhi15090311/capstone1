@@ -1,31 +1,30 @@
 import { useState } from "react";
 import Signup from './components/SignUp';
 import StartingBalance from './components/StartingBalanceCard';
-import IncomePattern from './components/IncomePatternCard';
 import FixedBills from './components/FixedBillsCard';
 import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 export default function App() {
-  const [page, setPage] = useState<"landing" | "signin" | "signup" | "startingBalance" | "incomePattern" | "fixedBills">("landing");
+  const [page, setPage] = useState<"landing" | "signin" | "signup" | "startingBalance" | "fixedBills" | "dashboard">("landing");
 
   return (
     <div className="min-h-screen w-full bg-[#fcf7f3] flex justify-center items-center relative">
       {/* Universal Back Button */}
-      {["signup", "startingBalance", "incomePattern", "fixedBills"].includes(page) && (
+      {["signup", "startingBalance", "fixedBills"].includes(page) && (
         <button
-          className="absolute top-4 left-4  text-[#c64a30] px-4 py-2  hover:text-[#ad3712] rounded-full  shadow cursor-pointer "
+          className="absolute top-4 left-4 text-[#c64a30] px-4 py-2 hover:text-[#ad3712] rounded-full shadow cursor-pointer"
           onClick={() => {
-            if(page === "signup") setPage("landing");
-            else if(page === "startingBalance") setPage("signup");
-            else if(page === "incomePattern") setPage("startingBalance");
-            else if(page === "fixedBills") setPage("incomePattern");
+            if (page === "signup") setPage("landing");
+            else if (page === "startingBalance") setPage("signup");
+            else if (page === "fixedBills") setPage("startingBalance");
           }}
         >
           ← Back
         </button>
       )}
 
-      <div className="w-full max-w-md mx-auto">
+      <div className={`w-full ${page === "dashboard" ? "" : "max-w-md mx-auto"}`}>
         {page === "landing" && (
           <>
             <h1 className="text-center text-3xl font-bold text-[#b67328] mt-16 mb-12">Welcome Back</h1>
@@ -45,6 +44,7 @@ export default function App() {
           <Login
             onBack={() => setPage("landing")}
             onLogin={() => setPage("signup")}
+            onSuccess={() => setPage('dashboard')}
           />
         )}
         {page === "signup" && (
@@ -53,9 +53,9 @@ export default function App() {
             onLogin={() => setPage("signin")}
           />
         )}
-        {page === "startingBalance" && <StartingBalance onNext={() => setPage("incomePattern")} />}
-        {page === "incomePattern" && <IncomePattern onNext={() => setPage("fixedBills")} />}
-        {page === "fixedBills" && <FixedBills onNext={() => alert("Next")} onBack={() => setPage("incomePattern")} />}
+        {page === "startingBalance" && <StartingBalance onNext={() => setPage("fixedBills")} />}
+        {page === "fixedBills" && <FixedBills onNext={() => setPage("dashboard")} onBack={() => setPage("startingBalance")} />}
+        {page === "dashboard" && <Dashboard />}
       </div>
     </div>
   );

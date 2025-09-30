@@ -28,15 +28,10 @@ export default function StartingBalanceCard({ onNext, onBack }: StartingBalanceC
             <div className="w-7 h-7 rounded-full bg-[#c64c30] flex items-center justify-center text-white text-base font-semibold">1</div>
             <span className="text-xs text-[#211f1e] opacity-70 mt-2">Starting balance</span>
           </div>
-          <div className="h-1 bg-gray-200 flex-1 mx-2 mt-3"></div>
+          
           <div className="flex flex-col items-center flex-1">
             <div className="w-7 h-7 rounded-full bg-[#f9f5f1] flex items-center justify-center border border-gray-200 text-gray-600 text-base font-semibold">2</div>
-            <span className="text-xs text-[#211f1e] opacity-70 mt-2">Income pattern</span>
-          </div>
-          <div className="h-1 bg-gray-200 flex-1 mx-2 mt-3"></div>
-          <div className="flex flex-col items-center flex-1">
-            <div className="w-7 h-7 rounded-full bg-[#f9f5f1] flex items-center justify-center border border-gray-200 text-gray-600 text-base font-semibold">3</div>
-            <span className="text-xs text-[#211f1e] opacity-70 mt-2">Bills & runway</span>
+            <span className="text-xs text-[#211f1e] opacity-70 mt-2">Income Sources</span>
           </div>
         </div>
 
@@ -54,8 +49,7 @@ export default function StartingBalanceCard({ onNext, onBack }: StartingBalanceC
             onChange={e => setCurrency(e.target.value)}
           >
             <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="INR">INR</option>
+            
           </select>
 
           {/* Balance Input */}

@@ -78,7 +78,7 @@ export default function Signup({ onSuccess, onLogin }: SignupProps) {
         </form>
 
         {/* Google Sign-In */}
-        <button onClick={signInWithGoogle} className="w-full flex items-center justify-center gap-2 py-3 mt-8 text-white bg-red-600 rounded-lg shadow hover:bg-red-700 transition">
+        <button onClick={signInWithGoogle} className="w-full flex items-center justify-center gap-2 py-3 mt-8 text-white bg-blue-600 rounded-lg shadow hover:bg-red-700 transition">
           {/* Google Logo SVG here */}
           Sign in with Google
         </button>

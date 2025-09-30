@@ -1,99 +1,86 @@
 import { useState } from "react";
 
+// Pill toggle for bill options
+const BillToggle: React.FC<{
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}> = ({ label, active, onClick }) => (
+  <button
+    type="button"
+    className={`px-6 py-2 rounded-xl font-medium border transition text-base m-2
+      ${active
+        ? "bg-[#f9f5f0] border-[#dfcfc3] text-[#222]"
+        : "bg-white border-[#dfcfc3] text-[#444]"
+      }`}
+    onClick={onClick}
+  >
+    {label}
+  </button>
+);
+
 type FixedBillsProps = {
   onNext: () => void;
   onBack?: () => void;
 };
 
-export default function FixedBills({ onNext }: FixedBillsProps) {
-  const [primaryIncomeName, setPrimaryIncomeName] = useState("");
-  const [primaryIncomeAmount, setPrimaryIncomeAmount] = useState("");
-  const [incomeSources, setIncomeSources] = useState<{ name: string; amount: string }[]>([]);
+export default function FixedBills({ onNext, onBack }: FixedBillsProps) {
+  const billOptions = ["Rent", "Phone", "Internet", "Subscriptions"];
+  const [selected, setSelected] = useState<string[]>([]);
 
-  const addIncomeSource = () => {
-    setIncomeSources([...incomeSources, { name: "", amount: "" }]);
-  };
-
-  const handleIncomeChange = (idx: number, field: "name" | "amount", value: string) => {
-    setIncomeSources(
-      incomeSources.map((src, i) =>
-        i === idx ? { ...src, [field]: value } : src
-      )
+  const toggle = (bill: string) =>
+    setSelected(prev =>
+      prev.includes(bill) ? prev.filter(b => b !== bill) : [...prev, bill]
     );
-  };
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <div className="bg-white rounded-xl shadow-xl p-8 w-96 relative">
-        <div className="flex mb-6 border-b border-gray-300 pb-4 justify-between items-center">
-          <div className="flex flex-col items-center text-gray-600">
-            <div className="w-7 h-7 rounded-full bg-gray-300 flex items-center justify-center font-bold">1</div>
-            <p className="text-sm mt-2">Starting Balance</p>
-          </div>
-          <div className="flex flex-col items-center text-white font-semibold">
-            <div className="w-7 h-7 rounded-full bg-[#c64c30] flex items-center justify-center font-bold">2</div>
-            <p className="text-sm mt-2">Income Sources</p>
+    <div className="min-h-screen flex items-center justify-center bg-[#f9f5f1] p-4">
+      <div className="bg-white rounded-3xl shadow-lg p-8 max-w-md w-full mx-auto">
+        {/* Progress bar */}
+        <div className="flex flex-col items-center mb-5">
+          <span className="mb-2 text-gray-700">3 of 3</span>
+          <div className="flex w-full max-w-xs">
+            <div className="h-2 flex-1 mx-1 rounded-full bg-[#ec6b4f]" />
+            <div className="h-2 flex-1 mx-1 rounded-full bg-gray-200" />
+            <div className="h-2 flex-1 mx-1 rounded-full bg-gray-200" />
           </div>
         </div>
-
-        <h2 className="text-2xl font-semibold mb-6">What are your income sources?</h2>
-
-        <label className="block mb-2 font-medium">Your primary source of income</label>
-        <input
-          type="text"
-          value={primaryIncomeName}
-          onChange={e => setPrimaryIncomeName(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mb-2"
-          placeholder="E.g. Salary, Freelance, Business"
-        />
-        <input
-          type="number"
-          value={primaryIncomeAmount}
-          onChange={e => setPrimaryIncomeAmount(e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded mb-4"
-          placeholder="Income amount"
-        />
-
-        {/* Additional income sources */}
-        {incomeSources.map((src, idx) => (
-          <div key={idx} className="mb-4">
-            <label className="block mb-2 text-sm font-medium">Additional source #{idx + 1}</label>
-            <input
-              type="text"
-              value={src.name}
-              onChange={e => handleIncomeChange(idx, "name", e.target.value)}
-              className="w-full mb-2 p-2 border border-gray-300 rounded"
-              placeholder="Source name (e.g. side gig)"
+        <h2 className="text-2xl font-extrabold text-center mb-7">
+          Any regular bills we<br />should plan for?
+        </h2>
+        <div className="flex flex-wrap justify-center mb-6">
+          {billOptions.map(bill => (
+            <BillToggle
+              key={bill}
+              label={bill}
+              active={selected.includes(bill)}
+              onClick={() => toggle(bill)}
             />
-            <input
-              type="number"
-              value={src.amount}
-              onChange={e => handleIncomeChange(idx, "amount", e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Amount"
-            />
-          </div>
-        ))}
+          ))}
+        </div>
+        <p className="text-center text-gray-700 mb-10">
+          You can skip this now and add later.
+        </p>
         <button
-          type="button"
-          onClick={addIncomeSource}
-          className="w-full py-2 mb-4 border border-gray-400 rounded bg-gray-50 hover:bg-yellow-50 text-gray-600 transition"
-        >
-          + Add another source of income
-        </button>
-
-        <button
-          className="w-full bg-[#c64c30] text-white py-2 rounded mb-2 hover:bg-yellow-700 transition"
+          className="w-full py-3 rounded-xl font-semibold text-lg bg-[#dd5b36] text-white shadow hover:bg-[#c64a30] transition mb-3"
           onClick={onNext}
         >
-          Save & Continue
+          Finish
         </button>
         <button
-          className="w-full border py-2 rounded hover:bg-yellow-50 transition"
+          className="w-full text-[#d4572e] underline font-medium text-base bg-transparent mb-2"
           onClick={onNext}
         >
-          Skip for now
+          Skip
         </button>
+        {onBack && (
+          <button
+            className="w-full text-gray-400 font-medium text-base bg-transparent hover:text-gray-600 transition"
+            onClick={onBack}
+          >
+            Back
+          </button>
+        )}
       </div>
     </div>
   );

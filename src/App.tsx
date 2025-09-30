@@ -4,20 +4,23 @@ import StartingBalance from './components/StartingBalanceCard';
 import FixedBills from './components/FixedBillsCard';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import Pay from './components/pay';
+  // import Pay
 
 export default function App() {
-  const [page, setPage] = useState<"landing" | "signin" | "signup" | "startingBalance" | "fixedBills" | "dashboard">("landing");
+  const [page, setPage] = useState<"landing" | "signin" | "signup" | "startingBalance" | "pay" | "fixedBills" | "dashboard">("landing");
 
   return (
     <div className="min-h-screen w-full bg-[#fcf7f3] flex justify-center items-center relative">
       {/* Universal Back Button */}
-      {["signup", "startingBalance", "fixedBills"].includes(page) && (
+      {["signup", "startingBalance", "pay", "fixedBills"].includes(page) && (
         <button
           className="absolute top-4 left-4 text-[#c64a30] px-4 py-2 hover:text-[#ad3712] rounded-full shadow cursor-pointer"
           onClick={() => {
             if (page === "signup") setPage("landing");
             else if (page === "startingBalance") setPage("signup");
-            else if (page === "fixedBills") setPage("startingBalance");
+            else if (page === "pay") setPage("startingBalance");
+            else if (page === "fixedBills") setPage("pay");
           }}
         >
           ← Back
@@ -44,7 +47,7 @@ export default function App() {
           <Login
             onBack={() => setPage("landing")}
             onLogin={() => setPage("signup")}
-            onSuccess={() => setPage('dashboard')}
+            onSuccess={() => setPage("dashboard")}
           />
         )}
         {page === "signup" && (
@@ -53,8 +56,24 @@ export default function App() {
             onLogin={() => setPage("signin")}
           />
         )}
-        {page === "startingBalance" && <StartingBalance onNext={() => setPage("fixedBills")} />}
-        {page === "fixedBills" && <FixedBills onNext={() => setPage("dashboard")} onBack={() => setPage("startingBalance")} />}
+        {page === "startingBalance" && (
+          <StartingBalance
+            onNext={() => setPage("pay")}
+            onBack={() => setPage("signup")}
+          />
+        )}
+        {page === "pay" && (
+          <Pay
+            onNext={() => setPage("fixedBills")}
+            onBack={() => setPage("startingBalance")}
+          />
+        )}
+        {page === "fixedBills" && (
+          <FixedBills
+            onNext={() => setPage("dashboard")}
+            onBack={() => setPage("pay")}
+          />
+        )}
         {page === "dashboard" && <Dashboard />}
       </div>
     </div>

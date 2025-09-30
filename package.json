@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -r https://github.com/Abhi15090311/capstone-project-abhi.git"
+    "predeploy": "npm run build"
+    
   },
   "dependencies": {
     "firebase": "^12.3.0",
